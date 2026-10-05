@@ -1,0 +1,792 @@
+/* =========================================================
+     0. DESIGN TOKENS
+     ========================================================= */
+:root {
+  --bg: #111111;
+  --bg-raised: #161616;
+  --bg-card: #1c1c1e;
+  --border: #262628;
+  --text: #e7e9ee;
+  --text-muted: #8e8e93;
+  --text-faint: #48484a;
+  --accent: #7c5cff;
+  /* violet — primary */
+  --accent-soft: rgba(124, 92, 255, 0.12);
+  --accent-2: #35d0a8;
+  /* pace-green — reserved for the running motif only */
+  --font-display: 'Inter Tight', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: 14px;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+html,
+body {
+  color: var(--text);
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+#tsparticles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-color: var(--bg);
+  pointer-events: none;
+  /* Allows clicks to pass through */
+}
+
+/* subtle grain / vignette so the flat dark bg isn't lifeless */
+body::before {
+  display: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+.display-font {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #9b81ff;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+
+.section-heading {
+  font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem);
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.section-sub {
+  color: var(--text-muted);
+  max-width: 640px;
+}
+
+section {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+     1. NAVBAR
+     ========================================================= */
+.navbar-custom {
+  background: rgba(17, 17, 17, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: none;
+}
+
+.navbar-custom .navbar-brand {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+.navbar-custom .nav-link {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem !important;
+  transition: color .15s ease;
+  letter-spacing: 0.05em;
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+  color: var(--text);
+}
+
+/* =========================================================
+     2. HERO
+     ========================================================= */
+.hero {
+  padding: 12rem 0 8rem;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.hero-title {
+  font-size: clamp(2.4rem, 2rem + 2.5vw, 3.8rem);
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  color: var(--text-muted);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
+  margin-bottom: 2rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* social icon row */
+.social-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  justify-content: center;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  transition: color .2s ease, transform .2s ease;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+     3. PROJECT CARDS
+     ========================================================= */
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  height: 100%;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(124, 92, 255, 0.45);
+  box-shadow: 0 20px 40px -20px rgba(124, 92, 255, 0.35);
+}
+
+.project-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  margin-bottom: 1.1rem;
+}
+
+.project-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.project-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 1.3rem;
+}
+
+.project-link {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  transition: all .18s ease;
+}
+
+.project-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  gap: 0.65rem;
+}
+
+/* =========================================================
+     4. TIMELINE — styled as a running route / pace log
+     signature element: a vertical "track" line with distance-
+     marker nodes, dates set in mono like split times.
+     ========================================================= */
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+  opacity: 0.35;
+}
+
+@media (min-width: 768px) {
+  .timeline::before {
+    left: 50%;
+    margin-left: -1px;
+  }
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 3.2rem;
+  margin-bottom: 2.6rem;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: 20px;
+  top: 0.2rem;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 12px rgba(124, 92, 255, 0.5);
+  z-index: 2;
+}
+
+.timeline-item:nth-child(odd) .timeline-marker {
+  border-color: var(--accent);
+}
+
+.timeline-item:nth-child(even) .timeline-marker {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 12px rgba(53, 208, 168, 0.5);
+}
+
+.timeline-date {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent-2);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.timeline-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.5rem;
+}
+
+.timeline-card h3 {
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+}
+
+.timeline-card .role {
+  color: var(--accent);
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 0.55rem;
+  display: block;
+}
+
+.timeline-card p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 0;
+}
+
+/* desktop: alternate sides */
+@media (min-width: 768px) {
+  .timeline-item {
+    width: 50%;
+    padding-left: 0;
+    margin-bottom: 3rem;
+  }
+
+  .timeline-item:nth-child(odd) {
+    left: 0;
+    padding-right: 3.2rem;
+    text-align: right;
+  }
+
+  .timeline-item:nth-child(even) {
+    left: 50%;
+    padding-left: 3.2rem;
+  }
+
+  .timeline-item:nth-child(odd) .timeline-marker {
+    left: auto;
+    right: -7px;
+    transform: none;
+  }
+
+  .timeline-item:nth-child(even) .timeline-marker {
+    left: -7px;
+    transform: none;
+  }
+
+  .timeline-item:nth-child(odd) .role {}
+}
+
+/* =========================================================
+     5. CONTACT
+     ========================================================= */
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: 560px;
+}
+
+.contact-list li+li {
+  margin-top: 0.75rem;
+}
+
+.contact-list a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  color: var(--text);
+  transition: all .18s ease;
+}
+
+.contact-list a:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateX(4px);
+}
+
+.contact-list .icon-wrap {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-list .label {
+  font-weight: 600;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.contact-list .value {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+}
+
+/* =========================================================
+     6. FOOTER
+     ========================================================= */
+footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-raised);
+}
+
+footer a {
+  color: var(--text-muted);
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.footer-brand {
+  font-family: var(--font-mono);
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+
+/* section divider dot pattern, reused sparingly */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+  border: 0;
+  margin: 0;
+}
+
+.btn-accent {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0b0d12;
+  font-weight: 600;
+}
+
+.btn-accent:hover {
+  background: #9b81ff;
+  border-color: #9b81ff;
+  color: #0b0d12;
+}
+
+/* keyboard focus visibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+     LIGHT THEME (For Projects, Timeline, and Contact)
+     ========================================================= */
+.light-wrapper {
+  /* Ghi đè (Override) các biến CSS (Design Tokens) để chuyển sang giao diện sáng */
+  --bg: #ffffff;
+  --bg-raised: #f8f9fa;
+  --bg-card: #ffffff;
+  --border: #e5e5ea;
+  --text: #111111;
+  --text-muted: #555555;
+  --text-faint: #8e8e93;
+
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* Điều chỉnh hiệu ứng hover bóng đổ cho Card trong nền sáng để nổi bật hơn */
+.light-wrapper .project-card:hover {
+  box-shadow: 0 20px 40px -20px rgba(124, 92, 255, 0.2);
+}
+
+/* =========================================================
+     CUSTOM RESPONSIVE TIMELINE (Mock Style)
+     ========================================================= */
+/* Trục giữa timeline - màu đen đậm, rõ nét hơn */
+.light-wrapper .timeline::before {
+  background: #111111;
+  opacity: 1;
+  width: 4px;
+}
+
+@media (min-width: 768px) {
+  .light-wrapper .timeline::before {
+    left: 50%;
+    margin-left: -2px;
+  }
+}
+
+/* Định hình các nút tròn chứa Icon (Marker) */
+.light-wrapper .timeline-marker {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  z-index: 10;
+  border: none;
+  background-color: var(--bg-card);
+  /* Fallback nếu không có bg-danger... */
+  box-shadow: 0 0 0 4px var(--bg), 0 4px 10px rgba(0, 0, 0, 0.15);
+  top: 10px;
+}
+
+/* Xóa bỏ border của base theme trên marker */
+.light-wrapper .timeline-item:nth-child(odd) .timeline-marker,
+.light-wrapper .timeline-item:nth-child(even) .timeline-marker {
+  border: none;
+  box-shadow: 0 0 0 4px var(--bg), 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Thêm đổ bóng nhẹ cho thẻ card của timeline */
+.light-wrapper .timeline-card {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  background: var(--bg-card);
+}
+
+/* Căn chỉnh Layout Responsive trên Desktop */
+@media (min-width: 768px) {
+  .light-wrapper .timeline-item {
+    margin-bottom: 4.5rem;
+  }
+
+  .light-wrapper .timeline-item:nth-child(odd) {
+    padding-right: 3.5rem;
+  }
+
+  .light-wrapper .timeline-item:nth-child(even) {
+    padding-left: 3.5rem;
+  }
+
+  /* Đưa marker vào chính giữa trục */
+  .light-wrapper .timeline-item:nth-child(odd) .timeline-marker {
+    left: auto;
+    right: 0;
+    transform: translate(50%, 0);
+  }
+
+  .light-wrapper .timeline-item:nth-child(even) .timeline-marker {
+    left: 0;
+    transform: translate(-50%, 0);
+  }
+
+  /* Đưa ngày tháng ra phía ngoài đối diện với card */
+  .light-wrapper .timeline-item .timeline-date {
+    position: absolute;
+    top: 18px;
+    width: 100%;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+  }
+
+  .light-wrapper .timeline-item:nth-child(odd) .timeline-date {
+    left: 100%;
+    margin-left: 30px;
+    text-align: left;
+  }
+
+  .light-wrapper .timeline-item:nth-child(even) .timeline-date {
+    right: 100%;
+    margin-right: 30px;
+    text-align: right;
+  }
+}
+
+/* Căn chỉnh Layout trên Di động (< 768px) */
+@media (max-width: 767.98px) {
+  .light-wrapper .timeline-item {
+    padding-left: 3.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .light-wrapper .timeline-marker {
+    left: 20px;
+    right: auto;
+    transform: translate(-50%, 0);
+    top: 10px;
+  }
+
+  /* Đưa ngày tháng thành dạng block hiển thị ngay trên card */
+  .light-wrapper .timeline-date {
+    display: block;
+    position: static;
+    margin-bottom: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent);
+    text-align: left;
+    font-weight: 600;
+  }
+}
+
+/* =========================================================
+     7. JS FEATURE STYLES
+     ========================================================= */
+/* Cursor Blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor {
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+  color: var(--accent);
+}
+
+/* Toast Notification */
+#toast-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.toast-notification {
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
+  color: var(--text);
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(124, 92, 255, 0.2);
+  transform: translateX(120%);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.toast-notification.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Filter Buttons */
+.project-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.filter-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.filter-btn.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.project-item {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.project-item.hidden {
+  display: none !important;
+}
+
+/* Modal */
+#modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#modal-container.hidden {
+  display: none !important;
+}
+.project-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+}
+.project-modal-content {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 2.5rem;
+  border-radius: var(--radius);
+  max-width: 500px;
+  width: 90%;
+  z-index: 10001;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: modal-up 0.3s ease-out;
+}
+@keyframes modal-up {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.project-modal-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.project-modal-content p {
+  color: var(--text-muted);
+}
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-modal:hover {
+  color: var(--text);
+}
+body.no-scroll {
+  overflow: hidden;
+}
